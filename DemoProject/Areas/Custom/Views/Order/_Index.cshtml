@@ -1,0 +1,53 @@
+﻿@model DemoProject.Models.OrderModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>顧客訂單管理</title>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#AddOrder').click(function () {
+                $.post('@Url.Action("LoadEmptyOrder", "Order")', null, function (response) {
+                    $('#DivOrderDetail').html(response);
+                    $('#AddOrder').hide();
+                });
+                return false;
+            });
+        });
+    </script>
+</head>
+<body>
+    <div id="DivCustomOrder">
+        <input type="button" id="AddOrder" value="新增訂單" />
+        <div id="DivOrderDetail">
+        </div>
+        <div id="DivOrderList">
+            <table border="1">
+                <tr>
+                    <th>@Html.LabelFor(m=>m.OrderNo)</th>
+                    <th>@Html.LabelFor(m=>m.ProductPK)</th>
+                    <th>@Html.LabelFor(m=>m.Price)</th>
+                    <th>@Html.LabelFor(m=>m.Count)</th>
+                    <th>@Html.LabelFor(m=>m.TotalPrice)</th>
+                    <th>@Html.LabelFor(m=>m.Status)</th>
+                </tr>
+                @foreach (var order in Model.OrderList) {
+                    <tr>
+                        <td>@order.OrderNo</td>
+                        <td>@order.ProductName</td>
+                        <td>@order.Price</td>
+                        <td>@order.Count</td>
+                        <td>@order.TotalPrice</td>
+                        <td>@order.Status</td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+</body>
+</html>

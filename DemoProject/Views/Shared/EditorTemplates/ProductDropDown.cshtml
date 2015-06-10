@@ -1,0 +1,5 @@
+﻿@model Guid?
+@{
+    SelectList List = new SelectList(new DAL.Service.BProduct().GetProductDPList(), "Value", "Text", Model.ToString());
+    @Html.DropDownList("", List, "--請選擇--")
+}

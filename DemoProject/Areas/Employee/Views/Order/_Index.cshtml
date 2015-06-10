@@ -1,0 +1,37 @@
+﻿@model DemoProject.Models.OrderModel
+<script type="text/javascript">
+    function LoadOrder(pk) {
+        $.post('@Url.Action("OrderDetail", "Order")?OrderPK=' + pk, null, function (response) {
+            $('#DivOrderDetail').html(response);
+        });
+        return false;
+    }
+</script>
+<div id="DivCustomOrder">
+    <div id="DivOrderDetail">
+    </div>
+    <div id="DivOrderList">
+        <table border="1">
+            <tr>
+                <th>@Html.LabelFor(m => m.OrderNo)</th>
+                <th>@Html.LabelFor(m => m.ProductPK)</th>
+                <th>@Html.LabelFor(m => m.Price)</th>
+                <th>@Html.LabelFor(m => m.Count)</th>
+                <th>@Html.LabelFor(m => m.TotalPrice)</th>
+                <th>@Html.LabelFor(m => m.Status)</th>
+                <th>審核</th>
+            </tr>
+            @foreach (var order in Model.OrderList) {
+                <tr>
+                    <td>@order.OrderNo</td>
+                    <td>@order.ProductName</td>
+                    <td>@order.Price</td>
+                    <td>@order.Count</td>
+                    <td>@order.TotalPrice</td>
+                    <td>@order.Status</td>
+                    <td><a href="#" onclick="LoadOrder('@order.PK');">審核</a></td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

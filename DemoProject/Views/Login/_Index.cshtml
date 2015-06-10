@@ -1,0 +1,36 @@
+﻿@model DemoProject.Models.LoginInfoModel
+@{
+    Layout = null;
+}
+<script type="text/javascript">
+    
+</script>
+<!DOCTYPE html>
+<html>
+<body>
+    <div>
+        @using (Html.BeginForm("UserLogin", "Login", FormMethod.Post, new { id = "UserLoginForm" })) {
+            <table>
+                <tr>
+                    <th>@Html.LabelFor(m=>m.Account)</th>
+                    <td>@Html.EditorFor(m=>m.Account)</td>
+                </tr>
+                <tr>
+                    <th>@Html.LabelFor(m=>m.Password)</th>
+                    <td>@Html.EditorFor(m=>m.Password)</td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input type="submit" value="登入" />
+                    </td>
+                </tr>
+            </table>
+            <div>
+                管理者帳號／密碼：Sysadmin／123456
+                <br />
+                會員帳號／密碼：Test001／test001
+            </div>
+        }
+    </div>
+</body>
+</html>

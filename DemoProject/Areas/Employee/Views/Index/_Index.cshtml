@@ -1,0 +1,48 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <script type="text/javascript" src="~/Scripts/2013.2.611/jquery-1.7.1.min.js"></script>
+    <title>_Index</title>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#Product').click(function () {
+                $.post('@Url.Action("Index", "Product")', null, function (response) {
+                    $('#Content').html(response);
+                });
+                return false;
+            });
+            $('#Order').click(function () {
+                $.post('@Url.Action("Index", "Order")', null, function (response) {
+                    $('#Content').html(response);
+                });
+                return false;
+            });
+        });
+    </script>
+</head>
+<body>
+    <table>
+        <tr>
+            <td style="width:10%;height:100%">
+                <ul>
+                    <li><a id="Product" href="#">產品管理</a></li>
+                    <li><a id="Order" href="#">訂單管理</a></li>
+                </ul>
+                <a id="SignOut" href="@Url.Action("SignOut", "Login")">登出</a>
+            </td>
+            <td>
+                <div id="Content">
+
+                </div>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

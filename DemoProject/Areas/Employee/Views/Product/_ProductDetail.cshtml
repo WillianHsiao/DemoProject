@@ -1,0 +1,45 @@
+﻿@model DemoProject.Areas.Employee.Models.ProductModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>_ProductDetail</title>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("form[id='ProductForm']").submit(function () {
+                $.post($(this).attr("action"), $(this).serialize(), function (response) {
+                    $("#Content").html(response);
+                });
+                return false;
+            });
+        });
+    </script>
+</head>
+<body>
+    @using (Html.BeginForm("SaveProduct", "Product", FormMethod.Post, new { id = "ProductForm" })) {
+        <table>
+            <tr>
+                <th>@Html.LabelFor(m => m.Name)</th>
+                <td>@Html.EditorFor(m => m.Name) @Html.HiddenFor(m => m.PK)</td>
+            </tr>
+            <tr>
+                <th>@Html.LabelFor(m => m.Price)</th>
+                <td>@Html.EditorFor(m => m.Price)</td>
+            </tr>
+            <tr>
+                <th>@Html.LabelFor(m => m.Description)</th>
+                <td>@Html.TextAreaFor(m => m.Description)</td>
+            </tr>
+        </table>
+        <div>
+            <input type="submit" value="儲存" />
+            <input type="button" id="ClearProduct" value="清空" />
+        </div>
+    }
+</body>
+</html>

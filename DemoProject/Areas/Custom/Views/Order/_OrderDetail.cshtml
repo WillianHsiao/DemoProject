@@ -1,0 +1,53 @@
+﻿@model DemoProject.Models.OrderModel
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("form[id='OrderForm']").submit(function () {
+            $.post($(this).attr("action"), $(this).serialize(), function (response) {
+                $("#Content").html(response);
+            });
+            return false;
+        });
+    });
+    $('#ProductPK').change(function () {
+        $.get('@Url.Action("GetPrice", "Order")?ProductPK=' + $(this).val(), function (response) {
+            $('#lblPrice').text(response);
+            $('#Price').val(response);
+            var count = $('#Count').val();
+            if (count != '') {
+                $('#lblTotalPrice').text(parseInt(response) * parseInt(count));
+                $('#TotalPrice').val(parseInt(response) * parseInt(count));
+            }
+        });
+        return false;
+    });
+    $('#Count').change(function () {
+        if ($(this).val() != '') {
+            $('#lblTotalPrice').text(parseInt($('#Price').val()) * parseInt($(this).val()));
+            $('#TotalPrice').val(parseInt($('#Price').val()) * parseInt($(this).val()));
+        }
+        return false;
+    });
+</script>
+@using (Html.BeginForm("SaveOrder", "Order", FormMethod.Post, new { id = "OrderForm" })) {
+    <table>
+        <tr>
+            <th>@Html.LabelFor(m => m.ProductPK)</th>
+            <td>@Html.EditorFor(m => m.ProductPK)</td>
+        </tr>
+        <tr>
+            <th>@Html.LabelFor(m=>m.Price)</th>
+            <td><label id="lblPrice"></label>@Html.HiddenFor(m=>m.Price)</td>
+        </tr>
+        <tr>
+            <th>@Html.LabelFor(m => m.Count)</th>
+            <td>@Html.EditorFor(m => m.Count)</td>
+        </tr>
+        <tr>
+            <th>@Html.LabelFor(m => m.TotalPrice)</th>
+            <td><label id="lblTotalPrice"></label>@Html.HiddenFor(m => m.TotalPrice)</td>
+        </tr>
+        <tr>
+            <td colspan="2"><input type="submit" value="儲存" /></td>
+        </tr>
+    </table>
+}

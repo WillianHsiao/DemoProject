@@ -1,0 +1,74 @@
+﻿@model DemoProject.Areas.Custom.Models.UserDataModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>個人基本資料管理</title>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("form[id='UserDataForm']").submit(function () {
+                $.post($(this).attr("action"), $(this).serialize(), function (response) {
+                    $("#Content").html(response);
+                });
+                return false;
+            });
+        });
+    </script>
+</head>
+<body>
+    <div id="DivUserData">
+        @using (Html.BeginForm("UpdateUserData", "UserData", FormMethod.Post, new { id = "UserDataForm" })) { 
+            <table border="1">
+                <tr>
+                    <th>@Html.LabelFor(m => m.Name)</th>
+                    <td>@Html.EditorFor(m=>m.Name) @Html.HiddenFor(m=>m.PK)</td>
+                </tr>
+                <tr>
+                    <th>@Html.LabelFor(m=>m.H_TEL)</th>
+                    <td>@Html.EditorFor(m=>m.H_TEL)</td>
+                </tr>
+                <tr>
+                    <th>@Html.LabelFor(m=>m.M_TEL)</th>
+                    <td>@Html.EditorFor(m=>m.M_TEL)</td>
+                </tr>
+                <tr>
+                    <th>@Html.LabelFor(m => m.ADDR)</th>
+                    <td>@Html.EditorFor(m => m.ADDR)</td>
+                </tr>
+                <tr>
+                    <th>@Html.LabelFor(m => m.EMAIL)</th>
+                    <td>@Html.EditorFor(m => m.EMAIL)</td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input type="submit" value="儲存" />
+                    </td>
+                </tr>
+            </table>
+        }
+    </div>
+</body>
+</html>
+@if (ViewBag.Success != null) {
+    var bresult = (bool)ViewBag.Success;
+    if (bresult) {
+        <script type="text/javascript">
+            alert('儲存成功!');
+        </script>
+    }
+    else {
+        var message = "儲存失敗!\\n\\r";
+        var modelStateErrors = ViewData.ModelState.Keys.SelectMany(key => ViewData.ModelState[key].Errors);
+        foreach (var item in modelStateErrors) {
+            message += item.ErrorMessage + "\\n\\r";
+        }
+        <script type="text/javascript">
+            alert('@message');
+        </script>
+    }
+}

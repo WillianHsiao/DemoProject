@@ -1,0 +1,46 @@
+﻿@model DemoProject.Models.OrderModel
+<script type="text/javascript">
+    $('#ConfirmOrder').click(function () {
+        var pk = $('#PK').val();
+        var status = $('#Status').val();
+        $.post('@Url.Action("ConfirmOrder", "Order")', {OrderPK : pk, Status:status}, function (response) {
+            $('#Content').html(response);
+        });
+        return false;
+    });
+</script>
+<form>
+    <table>
+        <tr>
+            <th>@Html.LabelFor(m => m.OrderNo)</th>
+            <td>@Html.DisplayFor(m => m.OrderNo)@Html.HiddenFor(m => m.PK)</td>
+        </tr>
+        <tr>
+            <th>@Html.LabelFor(m => m.UserName)</th>
+            <td>@Html.DisplayFor(m => m.UserName)</td>
+        </tr>
+        <tr>
+            <th>@Html.LabelFor(m => m.ProductName)</th>
+            <td>@Html.DisplayFor(m => m.ProductName)</td>
+        </tr>
+        <tr>
+            <th>@Html.LabelFor(m => m.Price)</th>
+            <td>@Html.DisplayFor(m => m.Price)</td>
+        </tr>
+        <tr>
+            <th>@Html.LabelFor(m => m.Count)</th>
+            <td>@Html.DisplayFor(m => m.Count)</td>
+        </tr>
+        <tr>
+            <th>@Html.LabelFor(m => m.TotalPrice)</th>
+            <td>@Html.DisplayFor(m => m.TotalPrice)</td>
+        </tr>
+        <tr>
+            <th>@Html.LabelFor(m => m.Status)</th>
+            <td>@Html.EnumDropDownListFor(m => m.Status)</td>
+        </tr>
+        <tr>
+            <td colspan="2"><input type="button" id="ConfirmOrder" value="儲存" /></td>
+        </tr>
+    </table>
+</form>

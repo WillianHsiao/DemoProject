@@ -1,0 +1,288 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="TestDataBaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Login">
+          <Key>
+            <PropertyRef Name="PK" />
+          </Key>
+          <Property Name="PK" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Account" Type="nvarchar" MaxLength="50" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" />
+          <Property Name="UserPK" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Orders">
+          <Key>
+            <PropertyRef Name="PK" />
+          </Key>
+          <Property Name="PK" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="OrderNo" Type="nvarchar" MaxLength="14" />
+          <Property Name="ProductPK" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Count" Type="int" />
+          <Property Name="TotalPrice" Type="int" />
+          <Property Name="UserPK" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Status" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="PK" />
+          </Key>
+          <Property Name="PK" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Price" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="Description" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="UserData">
+          <Key>
+            <PropertyRef Name="PK" />
+          </Key>
+          <Property Name="PK" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="H_TEL" Type="nvarchar" MaxLength="10" />
+          <Property Name="M_TEL" Type="nvarchar" MaxLength="10" />
+          <Property Name="ADDR" Type="varchar" MaxLength="200" />
+          <Property Name="EMAIL" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsEmployee" Type="bit" Nullable="false" />
+          <Property Name="IsDelete" Type="bit" />
+        </EntityType>
+        <Association Name="FK_Login_ToUserData">
+          <End Role="UserData" Type="Self.UserData" Multiplicity="1" />
+          <End Role="Login" Type="Self.Login" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserData">
+              <PropertyRef Name="PK" />
+            </Principal>
+            <Dependent Role="Login">
+              <PropertyRef Name="UserPK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_ToProduct">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="PK" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="ProductPK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_ToUser">
+          <End Role="UserData" Type="Self.UserData" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserData">
+              <PropertyRef Name="PK" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="UserPK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TestDataBaseModelStoreContainer">
+          <EntitySet Name="Login" EntityType="Self.Login" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserData" EntityType="Self.UserData" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Login_ToUserData" Association="Self.FK_Login_ToUserData">
+            <End Role="UserData" EntitySet="UserData" />
+            <End Role="Login" EntitySet="Login" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_ToProduct" Association="Self.FK_Orders_ToProduct">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_ToUser" Association="Self.FK_Orders_ToUser">
+            <End Role="UserData" EntitySet="UserData" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TestDataBaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Login">
+          <Key>
+            <PropertyRef Name="PK" />
+          </Key>
+          <Property Name="PK" Type="Guid" Nullable="false" />
+          <Property Name="Account" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserPK" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="UserData" Relationship="TestDataBaseModel.FK_Login_ToUserData" FromRole="Login" ToRole="UserData" />
+        </EntityType>
+        <EntityType Name="UserData">
+          <Key>
+            <PropertyRef Name="PK" />
+          </Key>
+          <Property Name="PK" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="H_TEL" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="M_TEL" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ADDR" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="EMAIL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsEmployee" Type="Boolean" Nullable="false" />
+          <Property Name="IsDelete" Type="Boolean" />
+          <NavigationProperty Name="Logins" Relationship="TestDataBaseModel.FK_Login_ToUserData" FromRole="UserData" ToRole="Login" />
+          <NavigationProperty Name="Orders" Relationship="TestDataBaseModel.FK_Orders_ToUser" FromRole="UserData" ToRole="Order" />
+        </EntityType>
+        <EntityContainer Name="TestDataBaseEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Logins" EntityType="Self.Login" />
+          <EntitySet Name="UserDatas" EntityType="Self.UserData" />
+          <AssociationSet Name="FK_Login_ToUserData" Association="TestDataBaseModel.FK_Login_ToUserData">
+            <End Role="UserData" EntitySet="UserDatas" />
+            <End Role="Login" EntitySet="Logins" />
+          </AssociationSet>
+          <EntitySet Name="Orders" EntityType="TestDataBaseModel.Order" />
+          <EntitySet Name="Products" EntityType="TestDataBaseModel.Product" />
+          <AssociationSet Name="FK_Orders_ToProduct" Association="TestDataBaseModel.FK_Orders_ToProduct">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_ToUser" Association="TestDataBaseModel.FK_Orders_ToUser">
+            <End Role="UserData" EntitySet="UserDatas" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+        </EntityContainer>
+        <Association Name="FK_Login_ToUserData">
+          <End Type="TestDataBaseModel.UserData" Role="UserData" Multiplicity="1" />
+          <End Type="TestDataBaseModel.Login" Role="Login" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserData">
+              <PropertyRef Name="PK" />
+            </Principal>
+            <Dependent Role="Login">
+              <PropertyRef Name="UserPK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="PK" />
+          </Key>
+          <Property Name="PK" Type="Guid" Nullable="false" />
+          <Property Name="OrderNo" Type="String" MaxLength="14" FixedLength="false" Unicode="true" />
+          <Property Name="ProductPK" Type="Guid" Nullable="false" />
+          <Property Name="Count" Type="Int32" />
+          <Property Name="TotalPrice" Type="Int32" />
+          <Property Name="UserPK" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="Product" Relationship="TestDataBaseModel.FK_Orders_ToProduct" FromRole="Order" ToRole="Product" />
+          <NavigationProperty Name="UserData" Relationship="TestDataBaseModel.FK_Orders_ToUser" FromRole="Order" ToRole="UserData" />
+          <Property Name="Status" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="PK" />
+          </Key>
+          <Property Name="PK" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Price" Type="Int32" />
+          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Orders" Relationship="TestDataBaseModel.FK_Orders_ToProduct" FromRole="Product" ToRole="Order" />
+        </EntityType>
+        <Association Name="FK_Orders_ToProduct">
+          <End Type="TestDataBaseModel.Product" Role="Product" Multiplicity="1" />
+          <End Type="TestDataBaseModel.Order" Role="Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="PK" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="ProductPK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_ToUser">
+          <End Type="TestDataBaseModel.UserData" Role="UserData" Multiplicity="1" />
+          <End Type="TestDataBaseModel.Order" Role="Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserData">
+              <PropertyRef Name="PK" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="UserPK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TestDataBaseModelStoreContainer" CdmEntityContainer="TestDataBaseEntities">
+          <EntitySetMapping Name="Logins">
+            <EntityTypeMapping TypeName="TestDataBaseModel.Login">
+              <MappingFragment StoreEntitySet="Login">
+                <ScalarProperty Name="PK" ColumnName="PK" />
+                <ScalarProperty Name="Account" ColumnName="Account" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="UserPK" ColumnName="UserPK" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserDatas">
+            <EntityTypeMapping TypeName="TestDataBaseModel.UserData">
+              <MappingFragment StoreEntitySet="UserData">
+                <ScalarProperty Name="PK" ColumnName="PK" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="H_TEL" ColumnName="H_TEL" />
+                <ScalarProperty Name="M_TEL" ColumnName="M_TEL" />
+                <ScalarProperty Name="ADDR" ColumnName="ADDR" />
+                <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+                <ScalarProperty Name="IsEmployee" ColumnName="IsEmployee" />
+                <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Orders">
+            <EntityTypeMapping TypeName="TestDataBaseModel.Order">
+              <MappingFragment StoreEntitySet="Orders">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="UserPK" ColumnName="UserPK" />
+                <ScalarProperty Name="TotalPrice" ColumnName="TotalPrice" />
+                <ScalarProperty Name="Count" ColumnName="Count" />
+                <ScalarProperty Name="ProductPK" ColumnName="ProductPK" />
+                <ScalarProperty Name="OrderNo" ColumnName="OrderNo" />
+                <ScalarProperty Name="PK" ColumnName="PK" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="TestDataBaseModel.Product">
+              <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="PK" ColumnName="PK" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="無" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

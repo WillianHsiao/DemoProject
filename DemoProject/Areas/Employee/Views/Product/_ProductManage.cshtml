@@ -1,0 +1,57 @@
+﻿@model DemoProject.Areas.Employee.Models.ProductModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>產品管理</title>
+    <script type="text/javascript">
+        function EditProduct(pk) {
+            $.post('@Url.Action("Index", "Product")?ProductPK=' + pk, null, function (response) {
+                $('#Content').html(response);
+            });
+            return false;
+        }
+
+        function DeleteProduct(pk) {
+            $.post('@Url.Action("DeleteProduct", "Product")?PK=' + pk, null, function (response) {
+                $('#Content').html(response);
+            });
+            return false;
+        }
+    </script>
+</head>
+<body>
+    <div id="DivProductDetail">
+        @Html.Partial("_ProductDetail", Model)
+    </div>
+    <div id="DivProductList">
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>@Html.LabelFor(m=>m.Name)</th>
+                    <th>@Html.LabelFor(m=>m.Price)</th>
+                    <th>@Html.LabelFor(m=>m.Description)</th>
+                    <th>編輯</th>
+                    <th>刪除</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.ProductList) {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.Price</td>
+                        <td>@item.Description</td>
+                        <td><a href="#" onclick="EditProduct('@item.PK');">編輯</a></td>
+                        <td><a href="#" onclick="DeleteProduct('@item.PK')">刪除</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
